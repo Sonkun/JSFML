@@ -18,11 +18,11 @@ JNIEXPORT void JNICALL Java_org_jsfml_audio_SoundSource_nativeGetData
 
     sf::SoundSource *src = SOUND_SOURCE;
     void *data = env->GetDirectBufferAddress(buffer);
-    
+
     ((jbyte*)data)[0] = src->isRelativeToListener() ? 1 : 0;
     ((jfloat*)data)[1] = src->getVolume();
     ((jfloat*)data)[2] = src->getPitch();
-    
+
     sf::Vector3f pos = src->getPosition();
     ((jfloat*)data)[3] = pos.x;
     ((jfloat*)data)[4] = pos.y;

@@ -80,7 +80,7 @@ JNIEXPORT jboolean JNICALL Java_org_jsfml_audio_SoundBuffer_nativeSaveToFile (JN
  */
 JNIEXPORT void JNICALL Java_org_jsfml_audio_SoundBuffer_nativeGetData
     (JNIEnv *env, jobject obj, jobject buffer) {
-    
+
     sf::SoundBuffer *soundBuffer = THIS(sf::SoundBuffer);
     void *data = env->GetDirectBufferAddress(buffer);
 
@@ -100,6 +100,6 @@ JNIEXPORT void JNICALL Java_org_jsfml_audio_SoundBuffer_nativeGetSamples
 
     const sf::Int16 *samples = THIS(sf::SoundBuffer)->getSamples();
     jshort *jsamples = (jshort*)env->GetDirectBufferAddress(buffer);
-    
+
     memcpy(jsamples, samples, 2 * num);
 }

@@ -60,9 +60,9 @@ JNIEXPORT void JNICALL Java_org_jsfml_graphics_Font_nativeReleaseMemory
  */
 JNIEXPORT void JNICALL Java_org_jsfml_graphics_Font_nativeGetGlyph
     (JNIEnv *env, jobject obj, jint unicode, jint characterSize, jboolean bold, jobject buffer) {
-    
+
     const sf::Glyph& glyph = THIS(sf::Font)->getGlyph((sf::Uint32)unicode, characterSize, bold);
-    
+
     jint *buf = (jint*)env->GetDirectBufferAddress(buffer);
     buf[0] = glyph.advance;
     buf[1] = glyph.bounds.left;

@@ -71,7 +71,7 @@ JNIEXPORT void JNICALL Java_org_jsfml_graphics_Shape_nativeSetOutlineThickness
  */
 JNIEXPORT jint JNICALL Java_org_jsfml_graphics_Shape_nativeGetPointCount
   (JNIEnv *env, jobject obj) {
-  
+
     return SHAPE->getPointCount();
 }
 

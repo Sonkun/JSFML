@@ -143,7 +143,7 @@ JNIEXPORT void JNICALL Java_org_jsfml_window_Window_nativeSetSize
 JNIEXPORT void JNICALL Java_org_jsfml_window_Window_nativeGetSettings (JNIEnv *env, jobject obj, jobject buf) {
     const sf::ContextSettings& settings = SF_WINDOW->getSettings();
     jint *s = (jint*)env->GetDirectBufferAddress(buf);
-    
+
     s[0] = settings.depthBits;
     s[1] = settings.stencilBits;
     s[2] = settings.antialiasingLevel;

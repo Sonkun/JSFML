@@ -26,12 +26,12 @@ JSFML::SoundStream::~SoundStream() {
     JNIEnv *env;
     if(JVM::Attach(&env)) {
         env->DeleteGlobalRef(javaRef);
-        
+
         if(this->currentSamples) {
             env->DeleteGlobalRef(this->currentSamples);
             this->currentSamples = NULL;
         }
-        
+
         JVM::Detach(&env);
     }
 }
@@ -49,17 +49,17 @@ bool JSFML::SoundStream::onGetData(sf::SoundStream::Chunk& data) {
             env->DeleteGlobalRef(this->currentSamples);
             this->currentSamples = NULL;
         }
-    
+
         jobject samplesBuffer = env->CallObjectMethod(javaRef, m_onGetData);
         if(samplesBuffer) {
             this->currentSamples = env->NewGlobalRef(samplesBuffer);
             void *buffer = env->GetDirectBufferAddress(samplesBuffer);
             env->DeleteLocalRef(samplesBuffer);
-            
+
             jint header = ((jint*)buffer)[0];
-            
+
             continuePlaying = ((header & 0x80000000) == 0);
-            
+
             data.sampleCount = header & 0x7FFFFFFF;
             data.samples = ((sf::Int16*)buffer) + 2;
         }

@@ -53,7 +53,7 @@ JNIEXPORT void JNICALL Java_org_jsfml_audio_Sound_nativeGetData
 
     sf::Sound *sound = THIS(sf::Sound);
     void *data = env->GetDirectBufferAddress(buffer);
-    
+
     ((jbyte*)data)[0] = sound->getLoop() ? 1 : 0;
     ((jlong*)data)[1] = (jlong)sound->getPlayingOffset().asMicroseconds();
 }

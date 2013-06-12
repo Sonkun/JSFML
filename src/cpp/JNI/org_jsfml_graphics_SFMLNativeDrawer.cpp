@@ -16,11 +16,11 @@
 JNIEXPORT void JNICALL Java_org_jsfml_graphics_SFMLNativeDrawer_nativeDrawVertices
     (JNIEnv *env, jclass cls, jint num, jobject vbuf, jint type, jobject jtarget,
         jint blendMode, jobject xform, jobject texture, jobject shader) {
-    
+
     sf::RenderTarget *target = JSFML::NativeObject::GetExPointer<sf::RenderTarget>(
         env, jtarget, org_jsfml_internal_ExPtr_RENDER_TARGET);
     sf::Vertex *verts = (sf::Vertex*)env->GetDirectBufferAddress(vbuf);
-    
+
     target->draw(verts, num, (sf::PrimitiveType)type,
         sf::RenderStates((sf::BlendMode)blendMode,
                         JSFML::Intercom::decodeTransform(env, xform),

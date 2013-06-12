@@ -16,7 +16,7 @@
  */
 JNIEXPORT void JNICALL Java_org_jsfml_internal_SFMLNative_nativeInit (JNIEnv *env, jclass cls) {
     JVM::Init(env);
-    
+
     JSFML::InputStream::Init(env);
     JSFML::NativeObject::Init(env);
     JSFML::NativeRef::Init(env);

@@ -5,44 +5,44 @@
 
 	<!-- Environment -->
 	<property environment="env" />
-	
+
 	<!-- JSFML properties -->
 	<property name="jsfml.package" value="org.jsfml" />
 	<property name="jsfml.bin" value="jsfml" />
 	<property name="jsfml.out" location="./out" />
 	<property name="jsfml.lib" location="./lib" />
-	
+
 	<!-- SFML properties -->
 	<property name="sfml.bin" location="./sfml/bin" />
 	<property name="sfml.lib" location="./sfml/lib" />
 	<property name="sfml.include" location="./sfml/include" />
-	
+
 	<!-- Java properties -->
 	<property name="java.src" location="./src/java" />
 	<property name="java.out" location="${jsfml.out}/classes" />
 	<property name="java.classpath" value="${java.out}" />
-	
+
 	<!-- Javadoc properties -->
 	<property name="javadoc.out" location="./javadoc" />
-	
+
 	<!-- Jar properties -->
 	<property name="jar.file" value="${jsfml.out}/jsfml.jar" />
-	
+
 	<!-- C++ properties -->
 	<property name="cpp.src" location="./src/cpp" />
 	<property name="cpp.include" location="./include" />
 	<property name="cpp.obj" location="${jsfml.out}/obj" />
 	<property name="cpp.out" location="${jsfml.out}/bin" />
-	
+
 	<!-- JAR signing properties -->
 	<property name="jarsigner.alias" value="pdinklag" />
-	
+
 	<!-- Compile Java -->
 	<target name="compile" description="Compile the Java sources.">
 		<mkdir dir="${java.out}" />
 		<javac includeAntRuntime="false" srcdir="${java.src}" destdir="${java.out}" classpath="${java.classpath}" />
 	</target>
-	
+
 	<!-- Generate headers -->
 	<target name="headers" description="Generate the C++ JNI headers." depends="compile">
 		<mkdir dir="${cpp.include}/JSFML/JNI" />
@@ -52,7 +52,7 @@
             <class name="${jsfml.package}.internal.SFMLErrorCapture" />
             <class name="${jsfml.package}.internal.SFMLInputStream$NativeStreamRef" />
 			<class name="${jsfml.package}.internal.SFMLNative" />
-			
+
 			<!-- window -->
 			<class name="${jsfml.package}.window.Context" />
 			<class name="${jsfml.package}.window.Joystick" />
@@ -60,7 +60,7 @@
 			<class name="${jsfml.package}.window.Mouse" />
 			<class name="${jsfml.package}.window.VideoMode" />
             <class name="${jsfml.package}.window.Window" />
-			
+
 			<!-- graphics -->
 			<class name="${jsfml.package}.graphics.CircleShape" />
 			<class name="${jsfml.package}.graphics.ConvexShape" />
@@ -77,7 +77,7 @@
 			<class name="${jsfml.package}.graphics.Text" />
 			<class name="${jsfml.package}.graphics.Texture" />
 			<class name="${jsfml.package}.graphics.View" />
-			
+
 			<!-- audio -->
 			<class name="${jsfml.package}.audio.Listener" />
 			<class name="${jsfml.package}.audio.Music" />
@@ -89,7 +89,7 @@
 			<class name="${jsfml.package}.audio.SoundStream" />
 		</javah>
 	</target>
-    
+
     <!-- Validate that all JNI methods have an implementation -->
     <target name="check">
         <java fork="true" jar="${jsfml.lib}/SatisfiedLink.jar">
@@ -98,7 +98,7 @@
             <arg value="*.cpp"/>
         </java>
     </target>
-	
+
 	<!-- Compile C++ for Mac OS X - not to be used directly, use macosx -->
 	<target name="macosx.build">
 		<!-- Requires ${arch} -->
@@ -106,14 +106,14 @@
 		<mkdir dir="${cpp.obj}" />
 		<mkdir dir="${cpp.out}" />
 		<mkdir dir="${cpp.out}/${arch}" />
-		
+
 		<!-- get source files -->
 		<fileset id="cpp.src.fileset" dir="${cpp.src}">
 			<include name="Intercom/*.cpp" />
 			<include name="JNI/*.cpp" />
 		</fileset>
 		<pathconvert pathsep=" " property="cpp.src.files" refid="cpp.src.fileset"/>
-		
+
 		<!-- compile and link -->
 		<exec executable="g++" dir="${cpp.obj}" failonerror="true">
 			<arg value="-I${cpp.include}" />
@@ -130,7 +130,7 @@
 			<arg value="-Wl,-L${sfml.bin}/${arch},-lsfml-system,-lsfml-window,-lsfml-graphics,-lsfml-audio" />
 			<arg line="${cpp.src.files}" />
 		</exec>
-        
+
         <!-- edit load path of the libjsfml.jnilib's dependencies -->
 		<exec executable="install_name_tool" dir="${cpp.out}/${arch}/" failonerror="true">
             <arg value="-id" />
@@ -152,22 +152,22 @@
             <arg value="@loader_path/libsfml-audio.dylib" />
             <arg value="libjsfml.jnilib" />
         </exec>
-        
+
 		<copy todir="${cpp.out}/${arch}">
 			<fileset dir="${sfml.bin}/${arch}" includes="*.dylib" />
 		</copy>
-		
+
 		<checksum>
 			<fileset dir="${cpp.out}/${arch}" includes="*.jnilib *.dylib" />
 		</checksum>
 	</target>
-	
+
 	<!-- Compile C++ for Mac OS X -->
 	<target name="macosx" description="Build the C++ sources for Mac OS X Universal binary.">
 		<property name="arch" value="macosx_universal" />
 		<ant target="macosx.build" />
 	</target>
-	
+
 	<!-- Compile C++ for Linux - not to be used directly, use either linux32 or linux64 -->
 	<target name="linux.build">
 		<!-- Requires ${arch} -->
@@ -176,14 +176,14 @@
 		<mkdir dir="${cpp.obj}/${arch}" />
 		<mkdir dir="${cpp.out}" />
 		<mkdir dir="${cpp.out}/${arch}" />
-		
+
 		<!-- get source files -->
 		<fileset id="cpp.src.fileset" dir="${cpp.src}">
 			<include name="Intercom/*.cpp" />
 			<include name="JNI/*.cpp" />
 		</fileset>
 		<pathconvert pathsep=" " property="cpp.src.files" refid="cpp.src.fileset"/>
-		
+
 		<!-- compile and link -->
 		<exec executable="g++" dir="${cpp.obj}/${arch}" failonerror="true">
 			<arg value="-I${cpp.include}" />
@@ -201,33 +201,33 @@
 		<copy todir="${cpp.out}/${arch}">
 			<fileset dir="${sfml.bin}/${arch}" includes="*.so" />
 		</copy>
-		
+
 		<checksum>
 			<fileset dir="${cpp.out}/${arch}" includes="*.so" />
 		</checksum>
 	</target>
-	
+
 	<!-- Compile C++ for Linux 32 -->
 	<target name="linux32" description="Build the C++ sources for Linux 32 bit.">
 		<property name="arch" value="linux_x86" />
 		<ant target="linux.build" />
 	</target>
-	
+
 	<!-- Compile C++ for Linux 64 -->
 	<target name="linux64" description="Build the C++ sources for Linux 64 bit.">
 		<property name="arch" value="linux_x64" />
 		<ant target="linux.build" />
 	</target>
-	
+
 	<!-- Phony target to determine the Microsoft Visual Studio and Windows SDK paths on Windows systems. -->
 	<target name="windows.find.paths">
 		<exec executable="windows-find-vs.bat" outputproperty="path.vs" />
 		<echo message="Located Microsoft Visual Studio at: ${path.vs}" />
-		
+
 		<exec executable="windows-find-winsdk.bat" outputproperty="path.winsdk" />
 		<echo message="Located Windows SDK at: ${path.winsdk}" />
 	</target>
-	
+
 	<!-- Compile C++ for Windows - not to be used directly, use either win32 or win64 -->
 	<target name="windows.build">
 		<!-- Requires ${arch}, ${cl}, ${link}, ${cwd}, ${winsdk.lib} and ${vs.lib} -->
@@ -236,7 +236,7 @@
         <mkdir dir="${cpp.obj}/${arch}" />
 		<mkdir dir="${cpp.out}" />
 		<mkdir dir="${cpp.out}/${arch}" />
-		
+
 		<!-- compile -->
 		<exec executable="${cl}" dir="${cwd}" failonerror="true">
 			<arg value="/nologo" />
@@ -269,47 +269,47 @@
 			<arg value="sfml-audio.lib" />
 			<arg value="${cpp.obj}/${arch}/*.obj" />
 		</exec>
-		
+
 		<delete file="${cpp.out}/${arch}/${jsfml.bin}.exp" />
 		<delete file="${cpp.out}/${arch}/${jsfml.bin}.lib" />
-		
+
 		<copy todir="${cpp.out}/${arch}">
 			<fileset dir="${sfml.bin}/${arch}" includes="*.dll" />
 		</copy>
-		
+
 		<checksum>
 			<fileset dir="${cpp.out}/${arch}" includes="*.dll" />
 		</checksum>
 	</target>
-	
+
 	<!-- Compile C++ for Windows 32 -->
 	<target name="win32" description="Build the C++ sources for Windows 32 bit." depends="windows.find.paths">
 		<property name="cl" value="${path.vs}/VC/bin/cl.exe" />
 		<property name="link" value="${path.vs}/VC/bin/link.exe" />
 		<property name="cwd" value="${path.vs}/Common7/IDE" />
-		
+
 		<property name="vs.lib" value="${path.vs}/VC/lib" />
 		<property name="winsdk.lib" value="${path.winsdk}/Lib" />
-		
+
 		<property name="arch" value="windows_x86" />
-		
+
 		<ant target="windows.build" />
 	</target>
-	
+
 	<!-- Compile C++ for Windows 64 -->
 	<target name="win64" description="Build the C++ sources for Windows 64 bit." depends="windows.find.paths">
 		<property name="cl" value="${path.vs}/VC/bin/amd64/cl.exe" />
 		<property name="link" value="${path.vs}/VC/bin/amd64/link.exe" />
 		<property name="cwd" value="${path.vs}/VC/bin/amd64" />
-		
+
 		<property name="vs.lib" value="${path.vs}/VC/lib/amd64" />
 		<property name="winsdk.lib" value="${path.winsdk}/Lib/x64" />
-		
+
 		<property name="arch" value="windows_x64" />
-		
+
 		<ant target="windows.build" />
 	</target>
-	
+
 	<!-- Jar -->
 	<target name="jar" description="Generate the JAR file." depends="compile">
 		<jar destfile="${jar.file}">
@@ -349,13 +349,13 @@
 			</manifest>
 		</jar>
 	</target>
-    
+
     <!-- Sign jar -->
     <target name="signjar" description="Sign the jar with the password given by the user.">
 		<input message="Please enter keystore password (or empty to skip signing):" addproperty="storepass" />
         <signjar jar="${jar.file}" alias="${jarsigner.alias}" storepass="${storepass}" lazy="true" />
     </target>
-	
+
 	<!-- Javadoc -->
 	<target name="javadoc" description="Generate the Javadoc.">
 		<mkdir dir="${javadoc.out}" />
@@ -366,14 +366,14 @@
 			link="http://docs.oracle.com/javase/7/docs/api/"
 			/>
 	</target>
-	
+
 	<!-- Clean everything -->
 	<target name="clean" description="Clean up.">
 		<delete dir="${jsfml.out}" />
 		<delete dir="${examples.out}" />
 		<delete dir="${javadoc.out}" />
 	</target>
-	
+
 	<!-- Help -->
 	<target name="help" description="Display instructions on how to use this buildfile.">
 		<echo>JSFML Build Script

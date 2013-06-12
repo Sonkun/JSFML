@@ -11,7 +11,7 @@ uniform float offset;
 void main()
 {
 	vec2 v = vec2(gl_TexCoord[0]);
-	
+
 	float x = v.x + offset;
 	float s = sin(2.0 * pi * x / wavelen);
 	v.y = v.y - s * amplitude;

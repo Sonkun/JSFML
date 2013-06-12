@@ -48,13 +48,13 @@ bool JSFML::SoundRecorder::onProcessSamples(const sf::Int16 *samples, std::size_
     JNIEnv *env;
     if(JVM::Attach(&env)) {
         jshortArray jsamplesArray = env->NewShortArray((jsize)count);
-        
+
         jshort *jsamples = env->GetShortArrayElements(jsamplesArray, NULL);
         for(int i = 0; i < count; i++) {
             jsamples[i] = (jshort)samples[i];
         }
         env->ReleaseShortArrayElements(jsamplesArray, jsamples, 0);
-    
+
         continueRecording = (bool)env->CallBooleanMethod(javaRef, m_onProcessSamples, jsamplesArray);
         JVM::Detach(&env);
     }

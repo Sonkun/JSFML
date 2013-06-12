@@ -24,18 +24,18 @@ JNIEXPORT void JNICALL Java_org_jsfml_internal_SFMLErrorCapture_nativeStart(JNIE
 JNIEXPORT jstring JNICALL Java_org_jsfml_internal_SFMLErrorCapture_nativeFinish(JNIEnv *env, jclass cls) {
     //Flush error stream
     sf::err().flush();
-    
+
     //Get ouput
     jstring output = env->NewStringUTF(buffer->str().c_str());
-    
+
     //Reset old stream
     sf::err().rdbuf(old);
     old = NULL;
-    
+
     //Delete buffer
     delete buffer;
     buffer = NULL;
-    
+
     //Return output
     return output;
 }

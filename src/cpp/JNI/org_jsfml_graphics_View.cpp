@@ -30,7 +30,7 @@ JNIEXPORT void JNICALL Java_org_jsfml_graphics_View_nativeDelete (JNIEnv *env, j
  */
 JNIEXPORT void JNICALL Java_org_jsfml_graphics_View_nativeSetCenter
     (JNIEnv *env, jobject obj, jfloat x, jfloat y) {
-    
+
     THIS(sf::View)->setCenter(x, y);
 }
 
@@ -41,7 +41,7 @@ JNIEXPORT void JNICALL Java_org_jsfml_graphics_View_nativeSetCenter
  */
 JNIEXPORT void JNICALL Java_org_jsfml_graphics_View_nativeSetSize
     (JNIEnv *env, jobject obj, jfloat width, jfloat height) {
-    
+
     THIS(sf::View)->setSize(width, height);
 }
 
@@ -52,7 +52,7 @@ JNIEXPORT void JNICALL Java_org_jsfml_graphics_View_nativeSetSize
  */
 JNIEXPORT void JNICALL Java_org_jsfml_graphics_View_nativeSetRotation
     (JNIEnv *env, jobject obj, jfloat angle) {
-    
+
     THIS(sf::View)->setRotation(angle);
 }
 
@@ -63,7 +63,7 @@ JNIEXPORT void JNICALL Java_org_jsfml_graphics_View_nativeSetRotation
  */
 JNIEXPORT void JNICALL Java_org_jsfml_graphics_View_nativeSetViewport
     (JNIEnv *env, jobject obj, jobject rect) {
-    
+
     THIS(sf::View)->setViewport(JSFML::Intercom::decodeFloatRect(env, rect));
 }
 
@@ -74,7 +74,7 @@ JNIEXPORT void JNICALL Java_org_jsfml_graphics_View_nativeSetViewport
  */
 JNIEXPORT void JNICALL Java_org_jsfml_graphics_View_nativeReset
     (JNIEnv *env, jobject obj, jobject rect) {
-    
+
     THIS(sf::View)->reset(JSFML::Intercom::decodeFloatRect(env, rect));
 }
 

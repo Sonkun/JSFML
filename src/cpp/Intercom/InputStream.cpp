@@ -48,7 +48,7 @@ sf::Int64 JSFML::InputStream::read(void *buffer, sf::Int64 size) {
         env->DeleteLocalRef(byteBuffer);
         JVM::Detach(&env);
     }
-    
+
     return read;
 }
 
@@ -60,7 +60,7 @@ sf::Int64 JSFML::InputStream::seek(sf::Int64 pos) {
         actualPos = (sf::Int64)env->CallLongMethod(javaRef, m_seek, (jlong)pos);
         JVM::Detach(&env);
     }
-    
+
     return pos;
 }
 
@@ -72,7 +72,7 @@ sf::Int64 JSFML::InputStream::tell() {
         pos = (sf::Int64)env->CallLongMethod(javaRef, m_tell);
         JVM::Detach(&env);
     }
-    
+
     return pos;
 }
 
@@ -84,6 +84,6 @@ sf::Int64 JSFML::InputStream::getSize() {
         size = (sf::Int64)env->CallLongMethod(javaRef, m_getSize);
         JVM::Detach(&env);
     }
-    
+
     return size;
 }

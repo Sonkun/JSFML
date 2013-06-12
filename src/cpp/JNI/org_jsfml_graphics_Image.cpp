@@ -74,7 +74,7 @@ JNIEXPORT void JNICALL Java_org_jsfml_graphics_Image_nativeSync
     sf::Uint8 *dst = (sf::Uint8*)env->GetDirectBufferAddress(buffer);
     const sf::Uint8 *src = THIS(sf::Image)->getPixelsPtr();
     int x = width * height * 4;
-    
+
     while(x) {
         *dst++ = *src++;
         x--;
@@ -88,7 +88,7 @@ JNIEXPORT void JNICALL Java_org_jsfml_graphics_Image_nativeSync
  */
 JNIEXPORT void JNICALL Java_org_jsfml_graphics_Image_nativeCommit
     (JNIEnv *env, jobject obj, jint width, jint height, jobject buffer) {
-    
+
     if(width == 0 || height == 0) {
         THIS(sf::Image)->create(0, 0);
     } else {

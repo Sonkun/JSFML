@@ -41,7 +41,7 @@ public class ExampleApp {
             ex.printStackTrace();
             return;
         }
-        
+
         //Create a clock for measuring frame time
         Clock frameClock = new Clock();
 

@@ -11,7 +11,7 @@ JNIEXPORT void JNICALL Java_org_jsfml_window_VideoMode_nativeGetDesktopMode
     (JNIEnv *env, jclass cls, jobject buf) {
 
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    
+
     jint *vmode = (jint*)env->GetDirectBufferAddress(buf);
     vmode[0] = desktop.width;
     vmode[1] = desktop.height;
@@ -39,7 +39,7 @@ JNIEXPORT void JNICALL Java_org_jsfml_window_VideoMode_nativeGetFullscreenModes
 
     const std::vector<sf::VideoMode>& modes = sf::VideoMode::getFullscreenModes();
     jint *data = (jint*)env->GetDirectBufferAddress(buf);
-    
+
     for(int i = 0; i < modes.size(); i++) {
         const sf::VideoMode& mode = modes[i];
         data[3 * i]     = mode.width;

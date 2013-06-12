@@ -12,16 +12,16 @@ std::wstring JSFML::Intercom::decodeUtf32(JNIEnv *env, jstring jstr) {
         //sizeof(wchar_t) != 2
         jsize len = env->GetStringLength(jstr);
         wchar_t *buffer = new wchar_t[len + 1];
-        
+
         buffer[len] = 0;
         for(jsize i = 0; i < len; i++) {
             buffer[i] = (wchar_t)jchars[i];
         }
-        
+
         s = std::wstring(buffer);
         delete[] buffer;
     #endif
-    
+
     env->ReleaseStringChars(jstr, jchars);
     return s;
 }
@@ -63,7 +63,7 @@ sf::FloatRect JSFML::Intercom::decodeFloatRect(JNIEnv *env, jobject code) {
 void JSFML::Intercom::encodeTransform(JNIEnv *env, const sf::Transform& xform, jobject out) {
     jfloat *buf = (jfloat*)env->GetDirectBufferAddress(out);
     const float *data = xform.getMatrix();
-    
+
     buf[0] = data[0];
     buf[1] = data[4];
     buf[2] = data[12];
@@ -99,7 +99,7 @@ jlong JSFML::Intercom::encodeVector2f(const sf::Vector2f& v) {
     int x, y;
     *((jfloat*)&x) = v.x;
     *((jfloat*)&y) = v.y;
-    
+
     jlong vec = (jlong)y << 32;
     vec |= x;
     return vec;

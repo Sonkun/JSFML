@@ -24,7 +24,7 @@ JNIEXPORT jint JNICALL Java_org_jsfml_graphics_Texture_nativeGetMaximumSize (JNI
  */
 JNIEXPORT void JNICALL Java_org_jsfml_graphics_Texture_nativeBind
     (JNIEnv *env, jclass cls, jobject jtex, jint coordType) {
-    
+
     sf::Texture::bind(
         JSFML::NativeObject::GetPointer<sf::Texture>(env, jtex),
         (sf::Texture::CoordinateType)coordType);
@@ -92,7 +92,7 @@ JNIEXPORT jboolean JNICALL Java_org_jsfml_graphics_Texture_nativeLoadFromFile
 
     const char *path = env->GetStringUTFChars(jpath, NULL);
     jboolean result = THIS(sf::Texture)->loadFromFile(std::string(path), JSFML::Intercom::decodeIntRect(env, area));
-    
+
     env->ReleaseStringUTFChars(jpath, path);
     return result;
 }
@@ -160,7 +160,7 @@ JNIEXPORT void JNICALL Java_org_jsfml_graphics_Texture_nativeUpdate__Lorg_jsfml_
  */
 JNIEXPORT jboolean JNICALL Java_org_jsfml_graphics_Texture_nativeIsSmooth
     (JNIEnv *env, jobject obj) {
-    
+
     return THIS(sf::Texture)->isSmooth();
 }
 
@@ -180,7 +180,7 @@ JNIEXPORT void JNICALL Java_org_jsfml_graphics_Texture_nativeSetSmooth (JNIEnv *
  */
 JNIEXPORT jboolean JNICALL Java_org_jsfml_graphics_Texture_nativeIsRepeated
     (JNIEnv *env, jobject obj) {
-    
+
     return THIS(sf::Texture)->isRepeated();
 }
 
