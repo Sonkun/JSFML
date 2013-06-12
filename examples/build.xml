@@ -39,11 +39,11 @@
 		</copy>
 	</target>
 
-    <!-- Sign jar -->
-    <target name="signjar" description="Sign the jar with the password given by the user.">
+	<!-- Sign jar -->
+	<target name="signjar" description="Sign the jar with the password given by the user.">
 		<input message="Please enter keystore password (or empty to skip signing):" addproperty="storepass" />
-        <signjar jar="${jar.file}" alias="${jarsigner.alias}" storepass="${storepass}" lazy="true" />
-    </target>
+		<signjar jar="${jar.file}" alias="${jarsigner.alias}" storepass="${storepass}" lazy="true" />
+	</target>
 
 	<!-- Clean up -->
 	<target name="clean" description="Clean up.">

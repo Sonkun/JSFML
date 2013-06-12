@@ -49,8 +49,8 @@
 		<javah destdir="${cpp.include}/JSFML/JNI" classpath="${java.classpath}">
 			<!-- internal -->
 			<class name="${jsfml.package}.internal.ExPtr" />
-            <class name="${jsfml.package}.internal.SFMLErrorCapture" />
-            <class name="${jsfml.package}.internal.SFMLInputStream$NativeStreamRef" />
+			<class name="${jsfml.package}.internal.SFMLErrorCapture" />
+			<class name="${jsfml.package}.internal.SFMLInputStream$NativeStreamRef" />
 			<class name="${jsfml.package}.internal.SFMLNative" />
 
 			<!-- window -->
@@ -59,7 +59,7 @@
 			<class name="${jsfml.package}.window.Keyboard" />
 			<class name="${jsfml.package}.window.Mouse" />
 			<class name="${jsfml.package}.window.VideoMode" />
-            <class name="${jsfml.package}.window.Window" />
+			<class name="${jsfml.package}.window.Window" />
 
 			<!-- graphics -->
 			<class name="${jsfml.package}.graphics.CircleShape" />
@@ -69,7 +69,7 @@
 			<class name="${jsfml.package}.graphics.RectangleShape" />
 			<class name="${jsfml.package}.graphics.RenderTexture" />
 			<class name="${jsfml.package}.graphics.RenderWindow" />
-            <class name="${jsfml.package}.graphics.SFMLNativeDrawer" />
+			<class name="${jsfml.package}.graphics.SFMLNativeDrawer" />
 			<class name="${jsfml.package}.graphics.SFMLNativeTransformable" />
 			<class name="${jsfml.package}.graphics.Shader" />
 			<class name="${jsfml.package}.graphics.Shape" />
@@ -90,14 +90,14 @@
 		</javah>
 	</target>
 
-    <!-- Validate that all JNI methods have an implementation -->
-    <target name="check">
-        <java fork="true" jar="${jsfml.lib}/SatisfiedLink.jar">
-            <arg path="${cpp.include}/JSFML/JNI"/>
-            <arg path="${cpp.src}/JNI"/>
-            <arg value="*.cpp"/>
-        </java>
-    </target>
+	<!-- Validate that all JNI methods have an implementation -->
+	<target name="check">
+		<java fork="true" jar="${jsfml.lib}/SatisfiedLink.jar">
+			<arg path="${cpp.include}/JSFML/JNI"/>
+			<arg path="${cpp.src}/JNI"/>
+			<arg value="*.cpp"/>
+		</java>
+	</target>
 
 	<!-- Compile C++ for Mac OS X - not to be used directly, use macosx -->
 	<target name="macosx.build">
@@ -118,40 +118,40 @@
 		<exec executable="g++" dir="${cpp.obj}" failonerror="true">
 			<arg value="-I${cpp.include}" />
 			<arg value="-I${sfml.include}" />
-            <arg value="-I${env.JAVA_HOME}/include" />
-            <arg value="-I${env.JAVA_HOME}/include/darwin" />
+			<arg value="-I${env.JAVA_HOME}/include" />
+			<arg value="-I${env.JAVA_HOME}/include/darwin" />
 			<arg value="-dynamiclib" />
 			<arg value="-arch" />
 			<arg value="i386" />
 			<arg value="-arch" />
 			<arg value="x86_64" />
 			<arg value="-o" />
-            <arg value="${cpp.out}/${arch}/lib${jsfml.bin}.jnilib" />
+			<arg value="${cpp.out}/${arch}/lib${jsfml.bin}.jnilib" />
 			<arg value="-Wl,-L${sfml.bin}/${arch},-lsfml-system,-lsfml-window,-lsfml-graphics,-lsfml-audio" />
 			<arg line="${cpp.src.files}" />
 		</exec>
 
-        <!-- edit load path of the libjsfml.jnilib's dependencies -->
+		<!-- edit load path of the libjsfml.jnilib's dependencies -->
 		<exec executable="install_name_tool" dir="${cpp.out}/${arch}/" failonerror="true">
-            <arg value="-id" />
-            <arg value="libjsfml.jnilib" />
-            <arg value="libjsfml.jnilib" />
-        </exec>
-        <exec executable="install_name_tool" dir="${cpp.out}/${arch}/" failonerror="true">
-            <arg value="-change" />
-            <arg value="libsfml-system.dylib" />
-            <arg value="@loader_path/libsfml-system.dylib" />
-            <arg value="-change" />
-            <arg value="libsfml-window.dylib" />
-            <arg value="@loader_path/libsfml-window.dylib" />
-            <arg value="-change" />
-            <arg value="libsfml-graphics.dylib" />
-            <arg value="@loader_path/libsfml-graphics.dylib" />
-            <arg value="-change" />
-            <arg value="libsfml-audio.dylib" />
-            <arg value="@loader_path/libsfml-audio.dylib" />
-            <arg value="libjsfml.jnilib" />
-        </exec>
+			<arg value="-id" />
+			<arg value="libjsfml.jnilib" />
+			<arg value="libjsfml.jnilib" />
+		</exec>
+		<exec executable="install_name_tool" dir="${cpp.out}/${arch}/" failonerror="true">
+			<arg value="-change" />
+			<arg value="libsfml-system.dylib" />
+			<arg value="@loader_path/libsfml-system.dylib" />
+			<arg value="-change" />
+			<arg value="libsfml-window.dylib" />
+			<arg value="@loader_path/libsfml-window.dylib" />
+			<arg value="-change" />
+			<arg value="libsfml-graphics.dylib" />
+			<arg value="@loader_path/libsfml-graphics.dylib" />
+			<arg value="-change" />
+			<arg value="libsfml-audio.dylib" />
+			<arg value="@loader_path/libsfml-audio.dylib" />
+			<arg value="libjsfml.jnilib" />
+		</exec>
 
 		<copy todir="${cpp.out}/${arch}">
 			<fileset dir="${sfml.bin}/${arch}" includes="*.dylib" />
@@ -233,7 +233,7 @@
 		<!-- Requires ${arch}, ${cl}, ${link}, ${cwd}, ${winsdk.lib} and ${vs.lib} -->
 		<delete file="${cpp.out}/${arch}/${jsfml.bin}.dll" />
 		<mkdir dir="${cpp.obj}" />
-        <mkdir dir="${cpp.obj}/${arch}" />
+		<mkdir dir="${cpp.obj}/${arch}" />
 		<mkdir dir="${cpp.out}" />
 		<mkdir dir="${cpp.out}/${arch}" />
 
@@ -350,11 +350,11 @@
 		</jar>
 	</target>
 
-    <!-- Sign jar -->
-    <target name="signjar" description="Sign the jar with the password given by the user.">
+	<!-- Sign jar -->
+	<target name="signjar" description="Sign the jar with the password given by the user.">
 		<input message="Please enter keystore password (or empty to skip signing):" addproperty="storepass" />
-        <signjar jar="${jar.file}" alias="${jarsigner.alias}" storepass="${storepass}" lazy="true" />
-    </target>
+		<signjar jar="${jar.file}" alias="${jarsigner.alias}" storepass="${storepass}" lazy="true" />
+	</target>
 
 	<!-- Javadoc -->
 	<target name="javadoc" description="Generate the Javadoc.">
@@ -382,7 +382,7 @@
 compile -- Compiles the Java sources to out/classes
 headers -- Generates JNI headers in include/JSFML/JNI.
 check   -- Invokes Satisfied Link to validate that all JNI methods
-           have an implementation.
+		   have an implementation.
 javadoc -- Generates the Javadoc in javadoc.
 win32   -- Compiles and links the C++ sources for Windows 32 bit.
 win64   -- Compiles and links the C++ sources for Windows 64 bit.
