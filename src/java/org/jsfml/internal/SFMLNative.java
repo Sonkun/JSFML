@@ -110,22 +110,16 @@ public final class SFMLNative {
                 nativeLibs.add("sfml-graphics-2.dll");
                 nativeLibs.add("jsfml.dll");
             } else if (osName.contains(OS_NAME_LINUX)) {
-                switch (osArch) {
-                    case "x86":
-                    case "i386":
-                        arch = "linux_x86";
-                        break;
 
-                    case "amd64":
-                        arch = "linux_x64";
-                        break;
-                }
+                System.load("/usr/lib/libsfml-system.so");
+                System.load("/usr/lib/libsfml-window.so");
+                System.load("/usr/lib/libsfml-graphics.so");
+                System.load("/usr/lib/libsfml-audio.so");
+                System.load("/usr/lib/libjsfml.so");
 
-                nativeLibs.add("libsfml-system.so");
-                nativeLibs.add("libsfml-window.so");
-                nativeLibs.add("libsfml-graphics.so");
-                nativeLibs.add("libsfml-audio.so");
-                nativeLibs.add("libjsfml.so");
+                nativeInit();
+
+                return;
             } else if (osName.contains(OS_NAME_MACOSX)) {
                 arch = "macosx_universal";
 

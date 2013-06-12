@@ -169,13 +169,15 @@
 	</target>
 
 	<!-- Compile C++ for Linux - not to be used directly, use either linux32 or linux64 -->
-	<target name="linux.build">
+	<target name="linux">
 		<!-- Requires ${arch} -->
+		<property name="arch" value="linux" />
+
 		<delete file="${cpp.out}/${arch}/lib${jsfml.bin}.so" />
-		<mkdir dir="${cpp.obj}" />
-		<mkdir dir="${cpp.obj}/${arch}" />
 		<mkdir dir="${cpp.out}" />
 		<mkdir dir="${cpp.out}/${arch}" />
+		<mkdir dir="${cpp.obj}" />
+		<mkdir dir="${cpp.obj}/${arch}" />
 
 		<!-- get source files -->
 		<fileset id="cpp.src.fileset" dir="${cpp.src}">
@@ -187,10 +189,7 @@
 		<!-- compile and link -->
 		<exec executable="g++" dir="${cpp.obj}/${arch}" failonerror="true">
 			<arg value="-I${cpp.include}" />
-			<arg value="-I${sfml.include}" />
 			<arg value="-I${env.JAVA_HOME}/include" />
-			<arg value="-I${env.JAVA_HOME}/include/linux" />
-			<arg value="-L${sfml.bin}/${arch}" />
 			<arg value="-shared" />
 			<arg value="-fPIC" />
 			<arg value="-o${cpp.out}/${arch}/lib${jsfml.bin}.so" />
@@ -198,25 +197,9 @@
 			<arg value="-Wl,-no-undefined,-lsfml-audio,-lsfml-graphics,-lsfml-window,-lsfml-system" />
 		</exec>
 
-		<copy todir="${cpp.out}/${arch}">
-			<fileset dir="${sfml.bin}/${arch}" includes="*.so" />
-		</copy>
-
 		<checksum>
 			<fileset dir="${cpp.out}/${arch}" includes="*.so" />
 		</checksum>
-	</target>
-
-	<!-- Compile C++ for Linux 32 -->
-	<target name="linux32" description="Build the C++ sources for Linux 32 bit.">
-		<property name="arch" value="linux_x86" />
-		<ant target="linux.build" />
-	</target>
-
-	<!-- Compile C++ for Linux 64 -->
-	<target name="linux64" description="Build the C++ sources for Linux 64 bit.">
-		<property name="arch" value="linux_x64" />
-		<ant target="linux.build" />
 	</target>
 
 	<!-- Phony target to determine the Microsoft Visual Studio and Windows SDK paths on Windows systems. -->
@@ -386,8 +369,7 @@ check   -- Invokes Satisfied Link to validate that all JNI methods
 javadoc -- Generates the Javadoc in javadoc.
 win32   -- Compiles and links the C++ sources for Windows 32 bit.
 win64   -- Compiles and links the C++ sources for Windows 64 bit.
-linux32 -- Compiles and links the C++ sources for Linux 32 bit.
-linux64 -- Compiles and links the C++ sources for Linux 64 bit.
+linux   -- Compiles and links the C++ sources for Linux
 macosx  -- Compiles and links the C++ sources for Mac OS X.
 jar     -- Generates the JSFML jar file in out.
 signjar -- Signs the generated JAR file.
