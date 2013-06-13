@@ -202,17 +202,10 @@
 		</checksum>
 	</target>
 
-	<!-- Phony target to determine the Microsoft Visual Studio and Windows SDK paths on Windows systems. -->
-	<target name="windows.find.paths">
-		<exec executable="windows-find-vs.bat" outputproperty="path.vs" />
-		<echo message="Located Microsoft Visual Studio at: ${path.vs}" />
-
-		<exec executable="windows-find-winsdk.bat" outputproperty="path.winsdk" />
-		<echo message="Located Windows SDK at: ${path.winsdk}" />
-	</target>
-
 	<!-- Compile C++ for Windows - not to be used directly, use either win32 or win64 -->
-	<target name="windows.build">
+	<target name="windows">
+		<property name="arch" value="windows" />
+		
 		<!-- Requires ${arch}, ${cl}, ${link}, ${cwd}, ${winsdk.lib} and ${vs.lib} -->
 		<delete file="${cpp.out}/${arch}/${jsfml.bin}.dll" />
 		<mkdir dir="${cpp.obj}" />
@@ -221,15 +214,12 @@
 		<mkdir dir="${cpp.out}/${arch}" />
 
 		<!-- compile -->
-		<exec executable="${cl}" dir="${cwd}" failonerror="true">
+		<exec executable="cl.exe" failonerror="true">
 			<arg value="/nologo" />
 			<arg value="/c" />
 			<arg value="/Ox" />
 			<arg value="/EHsc" />
-			<arg value="/I${path.winsdk}/Include" />
-			<arg value="/I${path.vs}/VC/include" />
 			<arg value="/I${cpp.include}" />
-			<arg value="/I${sfml.include}" />
 			<arg value="/I${env.JAVA_HOME}/include" />
 			<arg value="/I${env.JAVA_HOME}/include/win32" />
 			<arg value="${cpp.src}/Intercom/*.cpp" />
@@ -238,13 +228,10 @@
 		</exec>
 
 		<!-- link -->
-		<exec executable="${link}" dir="${cwd}" failonerror="true">
+		<exec executable="link.exe" failonerror="true">
 			<arg value="/nologo" />
 			<arg value="/DLL" />
 			<arg value="/OUT:${cpp.out}/${arch}/${jsfml.bin}.dll" />
-			<arg value="/LIBPATH:${winsdk.lib}" />
-			<arg value="/LIBPATH:${vs.lib}" />
-			<arg value="/LIBPATH:${sfml.lib}/${arch}" />
 			<arg value="sfml-main.lib" />
 			<arg value="sfml-system.lib" />
 			<arg value="sfml-window.lib" />
@@ -255,42 +242,6 @@
 
 		<delete file="${cpp.out}/${arch}/${jsfml.bin}.exp" />
 		<delete file="${cpp.out}/${arch}/${jsfml.bin}.lib" />
-
-		<copy todir="${cpp.out}/${arch}">
-			<fileset dir="${sfml.bin}/${arch}" includes="*.dll" />
-		</copy>
-
-		<checksum>
-			<fileset dir="${cpp.out}/${arch}" includes="*.dll" />
-		</checksum>
-	</target>
-
-	<!-- Compile C++ for Windows 32 -->
-	<target name="win32" description="Build the C++ sources for Windows 32 bit." depends="windows.find.paths">
-		<property name="cl" value="${path.vs}/VC/bin/cl.exe" />
-		<property name="link" value="${path.vs}/VC/bin/link.exe" />
-		<property name="cwd" value="${path.vs}/Common7/IDE" />
-
-		<property name="vs.lib" value="${path.vs}/VC/lib" />
-		<property name="winsdk.lib" value="${path.winsdk}/Lib" />
-
-		<property name="arch" value="windows_x86" />
-
-		<ant target="windows.build" />
-	</target>
-
-	<!-- Compile C++ for Windows 64 -->
-	<target name="win64" description="Build the C++ sources for Windows 64 bit." depends="windows.find.paths">
-		<property name="cl" value="${path.vs}/VC/bin/amd64/cl.exe" />
-		<property name="link" value="${path.vs}/VC/bin/amd64/link.exe" />
-		<property name="cwd" value="${path.vs}/VC/bin/amd64" />
-
-		<property name="vs.lib" value="${path.vs}/VC/lib/amd64" />
-		<property name="winsdk.lib" value="${path.winsdk}/Lib/x64" />
-
-		<property name="arch" value="windows_x64" />
-
-		<ant target="windows.build" />
 	</target>
 
 	<!-- Jar -->
@@ -367,8 +318,7 @@ headers -- Generates JNI headers in include/JSFML/JNI.
 check   -- Invokes Satisfied Link to validate that all JNI methods
 		   have an implementation.
 javadoc -- Generates the Javadoc in javadoc.
-win32   -- Compiles and links the C++ sources for Windows 32 bit.
-win64   -- Compiles and links the C++ sources for Windows 64 bit.
+windows -- Compiles and links the C++ sources for Windows
 linux   -- Compiles and links the C++ sources for Linux
 macosx  -- Compiles and links the C++ sources for Mac OS X.
 jar     -- Generates the JSFML jar file in out.

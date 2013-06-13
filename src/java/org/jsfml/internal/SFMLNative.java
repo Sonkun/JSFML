@@ -92,23 +92,18 @@ public final class SFMLNative {
             final LinkedList<String> nativeLibs = new LinkedList<>();
 
             if (osName.contains(OS_NAME_WINDOWS)) {
-                switch (osArch) {
-                    case "x86":
-                        arch = "windows_x86";
-                        break;
-
-                    case "amd64":
-                        arch = "windows_x64";
-                        break;
-                }
-
-                nativeLibs.add("libsndfile-1.dll");
-                nativeLibs.add("openal32.dll");
-                nativeLibs.add("sfml-system-2.dll");
-                nativeLibs.add("sfml-window-2.dll");
-                nativeLibs.add("sfml-audio-2.dll");
-                nativeLibs.add("sfml-graphics-2.dll");
-                nativeLibs.add("jsfml.dll");
+			
+                System.load("libsndfile-1.dll");
+                System.load("openal32.dll");
+                System.load("sfml-system-2.dll");
+                System.load("sfml-window-2.dll");
+                System.load("sfml-graphics-2.dll");
+                System.load("sfml-audio-2.dll");
+                System.load("jsfml.dll");
+				
+                nativeInit();
+				
+				return;
             } else if (osName.contains(OS_NAME_LINUX)) {
 
                 System.load("/usr/lib/libsfml-system.so");
