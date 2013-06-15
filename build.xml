@@ -22,6 +22,9 @@
 	<property name="java.out" location="${jsfml.out}/classes" />
 	<property name="java.classpath" value="${java.out}" />
 
+	<!-- JNI properties -->
+	<property name="jni.out" location="${jsfml.out}/include" />
+
 	<!-- Javadoc properties -->
 	<property name="javadoc.out" location="./javadoc" />
 
@@ -45,8 +48,8 @@
 
 	<!-- Generate headers -->
 	<target name="headers" description="Generate the C++ JNI headers." depends="compile">
-		<mkdir dir="${cpp.include}/JSFML/JNI" />
-		<javah destdir="${cpp.include}/JSFML/JNI" classpath="${java.classpath}">
+		<mkdir dir="${jni.out}/JSFML/JNI" />
+		<javah destdir="${jni.out}/JSFML/JNI" classpath="${java.classpath}">
 			<!-- internal -->
 			<class name="${jsfml.package}.internal.ExPtr" />
 			<class name="${jsfml.package}.internal.SFMLErrorCapture" />
@@ -169,7 +172,7 @@
 	</target>
 
 	<!-- Compile C++ for Linux - not to be used directly, use either linux32 or linux64 -->
-	<target name="linux">
+	<target name="linux" depends="headers">
 		<!-- Requires ${arch} -->
 		<property name="arch" value="linux" />
 
@@ -189,6 +192,7 @@
 		<!-- compile and link -->
 		<exec executable="g++" dir="${cpp.obj}/${arch}" failonerror="true">
 			<arg value="-I${cpp.include}" />
+			<arg value="-I${jni.out}" />
 			<arg value="-I${env.JAVA_HOME}/include" />
 			<arg value="-shared" />
 			<arg value="-fPIC" />
@@ -203,9 +207,9 @@
 	</target>
 
 	<!-- Compile C++ for Windows - not to be used directly, use either win32 or win64 -->
-	<target name="windows">
+	<target name="windows" depends="headers">
 		<property name="arch" value="windows" />
-		
+
 		<!-- Requires ${arch}, ${cl}, ${link}, ${cwd}, ${winsdk.lib} and ${vs.lib} -->
 		<delete file="${cpp.out}/${arch}/${jsfml.bin}.dll" />
 		<mkdir dir="${cpp.obj}" />
@@ -220,6 +224,7 @@
 			<arg value="/Ox" />
 			<arg value="/EHsc" />
 			<arg value="/I${cpp.include}" />
+			<arg value="/I${jni.out}" />
 			<arg value="/I${env.JAVA_HOME}/include" />
 			<arg value="/I${env.JAVA_HOME}/include/win32" />
 			<arg value="${cpp.src}/Intercom/*.cpp" />
