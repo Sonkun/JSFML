@@ -93,15 +93,6 @@
 		</javah>
 	</target>
 
-	<!-- Validate that all JNI methods have an implementation -->
-	<target name="check">
-		<java fork="true" jar="${jsfml.lib}/SatisfiedLink.jar">
-			<arg path="${cpp.include}/JSFML/JNI"/>
-			<arg path="${cpp.src}/JNI"/>
-			<arg value="*.cpp"/>
-		</java>
-	</target>
-
 	<!-- Compile C++ for Mac OS X - not to be used directly, use macosx -->
 	<target name="macosx.build">
 		<!-- Requires ${arch} -->
@@ -320,8 +311,6 @@
 
 compile -- Compiles the Java sources to out/classes
 headers -- Generates JNI headers in include/JSFML/JNI.
-check   -- Invokes Satisfied Link to validate that all JNI methods
-		   have an implementation.
 javadoc -- Generates the Javadoc in javadoc.
 windows -- Compiles and links the C++ sources for Windows
 linux   -- Compiles and links the C++ sources for Linux
