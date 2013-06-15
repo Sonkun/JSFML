@@ -18,7 +18,7 @@
 	<property name="sfml.include" location="./sfml/include" />
 
 	<!-- Java properties -->
-	<property name="java.src" location="./src/java" />
+	<property name="java.src" location="./src" />
 	<property name="java.out" location="${jsfml.out}/classes" />
 	<property name="java.classpath" value="${java.out}" />
 
@@ -32,8 +32,8 @@
 	<property name="jar.file" value="${jsfml.out}/jsfml.jar" />
 
 	<!-- C++ properties -->
-	<property name="cpp.src" location="./src/cpp" />
-	<property name="cpp.include" location="./include" />
+	<property name="cpp.src" location="./jni/src" />
+	<property name="cpp.include" location="./jni/include" />
 	<property name="cpp.obj" location="${jsfml.out}/obj" />
 	<property name="cpp.out" location="${jsfml.out}/bin" />
 
