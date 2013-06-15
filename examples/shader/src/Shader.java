@@ -2,16 +2,16 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.Font;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Sprite;
-import org.jsfml.graphics.Text;
-import org.jsfml.graphics.Texture;
-import org.jsfml.system.Clock;
-import org.jsfml.window.Mouse;
-import org.jsfml.window.VideoMode;
-import org.jsfml.window.event.Event;
+import sfml.graphics.Color;
+import sfml.graphics.Font;
+import sfml.graphics.RenderWindow;
+import sfml.graphics.Sprite;
+import sfml.graphics.Text;
+import sfml.graphics.Texture;
+import sfml.system.Clock;
+import sfml.window.Mouse;
+import sfml.window.VideoMode;
+import sfml.window.event.Event;
 
 
 public class Shader {
@@ -28,9 +28,9 @@ public class Shader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	 
+
 	    Effect.font = font;
-	    
+
 	    // Create the effects
 	    ArrayList<Effect> effects = new ArrayList<Effect>();
 	    effects.add(new Pixelate());
@@ -42,7 +42,7 @@ public class Shader {
 	    // Initialize them
 	    for (Effect effect : effects)
 	        effect.load();
-	        
+
 	    // Create the messages background
 	    Texture textBackgroundTexture = new Texture();
 	    try {
@@ -64,7 +64,7 @@ public class Shader {
 	    Text instructions = new Text("Press left and right arrows to change the current shader", font, 20);
 	    instructions.setPosition(280, 555);
 	    instructions.setColor(new Color(80, 80, 80));
-	    
+
 	    // Start the game loop
 	    Clock clock = new Clock();
 	    while (window.isOpen())
@@ -75,7 +75,7 @@ public class Shader {
                 // Close window: exit
                 if (event.type == Event.Type.CLOSED)
                     window.close();
-                
+
                 if (event.type == Event.Type.KEY_PRESSED)
                 {
                     switch (event.asKeyEvent().key)
@@ -108,7 +108,7 @@ public class Shader {
                     }
                 }
         	}
-        	
+
             // Update the current example
         	float x = Mouse.getPosition(window).x / window.getSize().x;
         	float y = Mouse.getPosition(window).y / window.getSize().y;
@@ -127,7 +127,7 @@ public class Shader {
 
             // Finally, display the rendered frame on screen
             window.display();
-        	
+
 	    }
 	}
 }

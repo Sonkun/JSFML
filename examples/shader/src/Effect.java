@@ -1,9 +1,9 @@
-import org.jsfml.graphics.Drawable;
-import org.jsfml.graphics.Font;
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderTarget;
-import org.jsfml.graphics.Shader;
-import org.jsfml.graphics.Text;
+import sfml.graphics.Drawable;
+import sfml.graphics.Font;
+import sfml.graphics.RenderStates;
+import sfml.graphics.RenderTarget;
+import sfml.graphics.Shader;
+import sfml.graphics.Text;
 
 
 //////////////////////////////////////////////////////////////
@@ -12,15 +12,15 @@ import org.jsfml.graphics.Text;
 public abstract class Effect implements Drawable {
 
 	public static Font font;
-	
+
 	String getName() {
 		return name;
 	}
-	
+
 	void load() {
 		isLoaded = Shader.isAvailable() && onLoad();
 	}
-	
+
 	void update(float time, float x, float y)
 	{
 		if (isLoaded)
@@ -41,12 +41,12 @@ public abstract class Effect implements Drawable {
 			target.draw(error, states);
 		}
 	}
-	
+
 	protected Effect(String name) {
 		this.name = name;
 		this.isLoaded = false;
 	}
-	
+
 	// Abstract functions to be implemented in derived effects
 	protected abstract boolean onLoad();
 	protected abstract void    onUpdate(float time, float x, float y);

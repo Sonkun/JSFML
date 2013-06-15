@@ -8,7 +8,7 @@ jmethodID JSFML::SoundStream::m_onGetData = 0;
 jmethodID JSFML::SoundStream::m_onSeek = 0;
 
 void JSFML::SoundStream::Init(JNIEnv *env) {
-    jclass javaClass = env->FindClass("org/jsfml/audio/SoundStream");
+    jclass javaClass = env->FindClass("sfml/audio/SoundStream");
     if(javaClass) {
         cls = (jclass)env->NewGlobalRef(javaClass);
         m_onGetData = env->GetMethodID(javaClass, "onGetDataInternal", "()Ljava/nio/Buffer;");

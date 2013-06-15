@@ -2,24 +2,24 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Random;
 
-import org.jsfml.system.Clock;
-import org.jsfml.system.Time;
-import org.jsfml.system.Vector2f;
-import org.jsfml.window.Keyboard;
-import org.jsfml.window.VideoMode;
-import org.jsfml.window.event.Event;
-import org.jsfml.graphics.CircleShape;
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.Font;
-import org.jsfml.graphics.RectangleShape;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Text;
-import org.jsfml.audio.Sound;
-import org.jsfml.audio.SoundBuffer;
+import sfml.system.Clock;
+import sfml.system.Time;
+import sfml.system.Vector2f;
+import sfml.window.Keyboard;
+import sfml.window.VideoMode;
+import sfml.window.event.Event;
+import sfml.graphics.CircleShape;
+import sfml.graphics.Color;
+import sfml.graphics.Font;
+import sfml.graphics.RectangleShape;
+import sfml.graphics.RenderWindow;
+import sfml.graphics.Text;
+import sfml.audio.Sound;
+import sfml.audio.SoundBuffer;
 
 
 public class Pong {
-	
+
 	private final static float pi = 3.1415f;
 	private final static int gameWidth = 800;
 	private final static int gameHeight = 600;
@@ -27,7 +27,7 @@ public class Pong {
 	private final static float ballRadius = 10;
 
 	public static void main(String[] args) {
-		
+
 		Random numberGenerator = new Random();
 
 		// Create the window of the application
@@ -42,7 +42,7 @@ public class Pong {
 			e.printStackTrace();
 		}
 		Sound ballSound = new Sound(ballSoundBuffer);
-		
+
 		// Create the left paddle
 		RectangleShape leftPaddle = new RectangleShape();
 		leftPaddle.setSize(new Vector2f(paddleSize.x - 3, paddleSize.y - 3));
@@ -58,7 +58,7 @@ public class Pong {
 		rightPaddle.setOutlineColor(Color.BLACK);
 		rightPaddle.setFillColor(new Color(200, 100, 200));
 		rightPaddle.setOrigin(new Vector2f(paddleSize.x / 2, paddleSize.y / 2));
-		
+
 	    // Create the ball
 		CircleShape ball = new CircleShape();
 		ball.setRadius(ballRadius - 3);
@@ -86,7 +86,7 @@ public class Pong {
 	    // Define the paddles properties
 	    Clock AITimer = new Clock();
 	    Time AITime = Time.getSeconds(0.1f);
-	    
+
 	    float paddleSpeed = 400.f;
 	    float rightPaddleSpeed  = 0.f;
 	    float ballSpeed = 400.f;
@@ -94,9 +94,9 @@ public class Pong {
 
 	    Clock clock = new Clock();
 	    boolean isPlaying = false;
-		
+
         while (window.isOpen()) {
-        	
+
             // Handle events
         	for (Event event : window.pollEvents())
         	{
@@ -105,32 +105,32 @@ public class Pong {
         			window.close();
         			break;
         		}
-        		
+
                 // Space key pressed: play
                 if ((event.type == Event.Type.KEY_PRESSED) && (event.asKeyEvent().key == Keyboard.Key.SPACE)) {
-                	
+
                     if (!isPlaying) {
 						// (re)start the game
 						isPlaying = true;
 						clock.restart();
-						
+
 						// Reset the position of the paddles and ball
 						leftPaddle.setPosition(10 + paddleSize.x / 2, gameHeight / 2);
 						rightPaddle.setPosition(gameWidth - 10 - paddleSize.x / 2, gameHeight / 2);
 						ball.setPosition(gameWidth / 2, gameHeight / 2);
-						
+
 						// Reset the ball angle
 						do
 						{
 						    // Make sure the ball initial angle is not too much vertical
 						    ballAngle = (numberGenerator.nextInt(360)) * 2 * pi / 360;
 						}
-						while (Math.abs(Math.cos(ballAngle)) < 0.7f);						
-						
+						while (Math.abs(Math.cos(ballAngle)) < 0.7f);
+
                     }
                 }
             }
-        	
+
             if (isPlaying)
             {
                 float deltaTime = clock.restart().asSeconds();
@@ -164,7 +164,7 @@ public class Pong {
                     else
                         rightPaddleSpeed = 0.f;
                 }
-                
+
                 // Move the ball
                 float factor = ballSpeed * deltaTime;
                 ball.move((float)Math.cos(ballAngle) * factor, (float)Math.sin(ballAngle) * factor);
@@ -192,10 +192,10 @@ public class Pong {
                     ballAngle = -ballAngle;
                     ball.setPosition(ball.getPosition().x, gameHeight - ballRadius - 0.1f);
                 }
-                
+
                 // Check the collisions between the ball and the paddles
                 // Left Paddle
-                if (ball.getPosition().x - ballRadius < leftPaddle.getPosition().x + paddleSize.x / 2 && 
+                if (ball.getPosition().x - ballRadius < leftPaddle.getPosition().x + paddleSize.x / 2 &&
                     ball.getPosition().x - ballRadius > leftPaddle.getPosition().x &&
                     ball.getPosition().y + ballRadius >= leftPaddle.getPosition().y - paddleSize.y / 2 &&
                     ball.getPosition().y - ballRadius <= leftPaddle.getPosition().y + paddleSize.y / 2)
@@ -224,7 +224,7 @@ public class Pong {
                     ball.setPosition(rightPaddle.getPosition().x - ballRadius - paddleSize.x / 2 - 0.1f, ball.getPosition().y);
                 }
             }
-  	
+
 	        // Clear the window
 	        window.clear(new Color(50, 200, 50));
 
@@ -243,7 +243,7 @@ public class Pong {
 
 	        // Display things on screen
 	        window.display();
-	        
+
         	}
     }
 }

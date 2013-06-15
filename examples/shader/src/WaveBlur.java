@@ -1,11 +1,11 @@
 import java.io.IOException;
 import java.nio.file.Paths;
 
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderTarget;
-import org.jsfml.graphics.ShaderSourceException;
-import org.jsfml.graphics.Text;
-import org.jsfml.graphics.Shader;
+import sfml.graphics.RenderStates;
+import sfml.graphics.RenderTarget;
+import sfml.graphics.ShaderSourceException;
+import sfml.graphics.Text;
+import sfml.graphics.Shader;
 
 
 ////////////////////////////////////////////////////////////
@@ -20,28 +20,28 @@ public class WaveBlur extends Effect {
 	@Override
 	protected boolean onLoad() {
 		// Create the text
-		text.setString("Praesent suscipit augue in velit pulvinar hendrerit varius purus aliquam.\n" + 
-		"Mauris mi odio, bibendum quis fringilla a, laoreet vel orci. Proin vitae vulputate tortor.\n" + 
-		"Praesent cursus ultrices justo, ut feugiat ante vehicula quis.\n" + 
-		"Donec fringilla scelerisque mauris et viverra.\n" + 
-		"Maecenas adipiscing ornare scelerisque. Nullam at libero elit.\n" + 
-		"Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.\n" + 
-		"Nullam leo urna, tincidunt id semper eget, ultricies sed mi.\n" + 
-		"Morbi mauris massa, commodo id dignissim vel, lobortis et elit.\n" + 
-		"Fusce vel libero sed neque scelerisque venenatis.\n" + 
-		"Integer mattis tincidunt quam vitae iaculis.\n" + 
-		"Vivamus fringilla sem non velit venenatis fermentum.\n" + 
-		"Vivamus varius tincidunt nisi id vehicula.\n" + 
-		"Integer ullamcorper, enim vitae euismod rutrum, massa nisl semper ipsum,\n" + 
-		"vestibulum sodales sem ante in massa.\n" + 
-		"Vestibulum in augue non felis convallis viverra.\n" + 
-		"Mauris ultricies dolor sed massa convallis sed aliquet augue fringilla.\n" + 
-		"Duis erat eros, porta in accumsan in, blandit quis sem.\n" + 
+		text.setString("Praesent suscipit augue in velit pulvinar hendrerit varius purus aliquam.\n" +
+		"Mauris mi odio, bibendum quis fringilla a, laoreet vel orci. Proin vitae vulputate tortor.\n" +
+		"Praesent cursus ultrices justo, ut feugiat ante vehicula quis.\n" +
+		"Donec fringilla scelerisque mauris et viverra.\n" +
+		"Maecenas adipiscing ornare scelerisque. Nullam at libero elit.\n" +
+		"Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.\n" +
+		"Nullam leo urna, tincidunt id semper eget, ultricies sed mi.\n" +
+		"Morbi mauris massa, commodo id dignissim vel, lobortis et elit.\n" +
+		"Fusce vel libero sed neque scelerisque venenatis.\n" +
+		"Integer mattis tincidunt quam vitae iaculis.\n" +
+		"Vivamus fringilla sem non velit venenatis fermentum.\n" +
+		"Vivamus varius tincidunt nisi id vehicula.\n" +
+		"Integer ullamcorper, enim vitae euismod rutrum, massa nisl semper ipsum,\n" +
+		"vestibulum sodales sem ante in massa.\n" +
+		"Vestibulum in augue non felis convallis viverra.\n" +
+		"Mauris ultricies dolor sed massa convallis sed aliquet augue fringilla.\n" +
+		"Duis erat eros, porta in accumsan in, blandit quis sem.\n" +
 		"In hac habitasse platea dictumst. Etiam fringilla est id odio dapibus sit amet semper dui laoreet.\n");
 		text.setFont(this.font);
 		text.setCharacterSize(22);
 		text.setPosition(30, 20);
-		
+
 		// Load the shader
 		shader = new Shader();
 		try {
@@ -50,7 +50,7 @@ public class WaveBlur extends Effect {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		return true;
 	}
 

@@ -7,7 +7,7 @@
 	<property environment="env" />
 
 	<!-- JSFML properties -->
-	<property name="jsfml.package" value="org.jsfml" />
+	<property name="jsfml.package" value="sfml" />
 	<property name="jsfml.bin" value="jsfml" />
 	<property name="jsfml.out" location="./out" />
 	<property name="jsfml.lib" location="./lib" />

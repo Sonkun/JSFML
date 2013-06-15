@@ -1,11 +1,11 @@
 import java.io.IOException;
 import java.nio.file.Paths;
 
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderTarget;
-import org.jsfml.graphics.Sprite;
-import org.jsfml.graphics.Texture;
-import org.jsfml.graphics.Shader;
+import sfml.graphics.RenderStates;
+import sfml.graphics.RenderTarget;
+import sfml.graphics.Sprite;
+import sfml.graphics.Texture;
+import sfml.graphics.Shader;
 
 
 ////////////////////////////////////////////////////////////
@@ -27,12 +27,12 @@ public class Pixelate extends Effect {
 			e.printStackTrace();
 		}
 		sprite = new Sprite(texture);
-		
+
 		// Load the shader
 		shader = new Shader();
 		shader.loadFromFile(Paths.get("resources/pixelate.frag", Shader.Type.FRAGMENT));
 		shader.setParameter("texture", Shader.CURRENT_TEXTURE);
-		
+
 		return true;
 	}
 
@@ -46,7 +46,7 @@ public class Pixelate extends Effect {
 		states.shader = shader;
 		target.draw(sprite, states);
 	}
-	
+
 	private Texture texture;
 	private Sprite  sprite;
 	private Shader  shader;

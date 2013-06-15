@@ -2,22 +2,22 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Random;
 
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.PrimitiveType;
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderTarget;
-import org.jsfml.graphics.ShaderSourceException;
-import org.jsfml.graphics.Vertex;
-import org.jsfml.graphics.VertexArray;
-import org.jsfml.graphics.Shader;
-import org.jsfml.system.Vector2f;
+import sfml.graphics.Color;
+import sfml.graphics.PrimitiveType;
+import sfml.graphics.RenderStates;
+import sfml.graphics.RenderTarget;
+import sfml.graphics.ShaderSourceException;
+import sfml.graphics.Vertex;
+import sfml.graphics.VertexArray;
+import sfml.graphics.Shader;
+import sfml.system.Vector2f;
 
 
 ////////////////////////////////////////////////////////////
 // "Storm" vertex shader + "blink" fragment shader
 ////////////////////////////////////////////////////////////
 public class StormBlink extends Effect {
-	
+
 	protected StormBlink() {
 		super("storm + blink");
 	}
@@ -26,7 +26,7 @@ public class StormBlink extends Effect {
 	protected boolean onLoad() {
         // Create the points
 		Random numberGenerator = new Random();
-		
+
         points.setPrimitiveType(PrimitiveType.POINTS);
         for (int i = 0; i < 40000; ++i)
         {
@@ -46,7 +46,7 @@ public class StormBlink extends Effect {
 			e.printStackTrace();
 			return true;
 		}
-        
+
         return true;
 	}
 
@@ -64,7 +64,7 @@ public class StormBlink extends Effect {
 		states.shader = shader;
 		target.draw(points, states);
 	}
-	
+
 	private VertexArray points;
 	private Shader      shader;
 }

@@ -9,7 +9,7 @@ jmethodID JSFML::SoundRecorder::m_onProcessSamples = 0;
 jmethodID JSFML::SoundRecorder::m_onStop = 0;
 
 void JSFML::SoundRecorder::Init(JNIEnv *env) {
-    jclass javaClass = env->FindClass("org/jsfml/audio/SoundRecorder");
+    jclass javaClass = env->FindClass("sfml/audio/SoundRecorder");
     if(javaClass) {
         cls = (jclass)env->NewGlobalRef(javaClass);
         m_onStart = env->GetMethodID(javaClass, "onStart", "()Z");

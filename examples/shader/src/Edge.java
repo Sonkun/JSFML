@@ -2,24 +2,24 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.IntRect;
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderTarget;
-import org.jsfml.graphics.RenderTexture;
-import org.jsfml.graphics.ShaderSourceException;
-import org.jsfml.graphics.Sprite;
-import org.jsfml.graphics.Texture;
-import org.jsfml.graphics.Shader;
-import org.jsfml.graphics.TextureCreationException;
-import org.jsfml.system.Vector2f;
+import sfml.graphics.Color;
+import sfml.graphics.IntRect;
+import sfml.graphics.RenderStates;
+import sfml.graphics.RenderTarget;
+import sfml.graphics.RenderTexture;
+import sfml.graphics.ShaderSourceException;
+import sfml.graphics.Sprite;
+import sfml.graphics.Texture;
+import sfml.graphics.Shader;
+import sfml.graphics.TextureCreationException;
+import sfml.system.Vector2f;
 
 
 ////////////////////////////////////////////////////////////
 //"Edge" post-effect fragment shader
 ////////////////////////////////////////////////////////////
 public class Edge extends Effect {
-	
+
 	protected Edge() {
 		super("edge post-effect");
 	}
@@ -38,12 +38,12 @@ public class Edge extends Effect {
 		try {
 			backgroundTexture.loadFromFile(Paths.get("resources/sfml.png"));
 			entityTexture.loadFromFile(Paths.get("resources/devices.png"));
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		backgroundTexture.setSmooth(true);
 		entityTexture.setSmooth(true);
 
@@ -90,8 +90,8 @@ public class Edge extends Effect {
 		{
 			surface.draw(entities.get(i));
 		}
-		
-		surface.display();		
+
+		surface.display();
 	}
 
 	@Override
