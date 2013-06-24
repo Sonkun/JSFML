@@ -110,7 +110,7 @@ public final class SFMLNative {
                 System.load("/usr/lib/libsfml-window.so");
                 System.load("/usr/lib/libsfml-graphics.so");
                 System.load("/usr/lib/libsfml-audio.so");
-                System.load("/home/sonkun/Workspace/JSFML/out/bin/linux/libjsfml.so");
+                System.load("/home/sonkun/Workspace/JSFML/out/bin/linux/libsfml.so");
 
                 nativeInit();
 

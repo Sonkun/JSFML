@@ -6,16 +6,25 @@
 	<!-- Environment -->
 	<property environment="env" />
 
+    <condition property="isWindows">
+        <os family="windows" />
+    </condition>
+
+    <condition property="isMac">
+        <os family="mac" />
+    </condition>
+
+    <condition property="isLinux">
+        <os family="unix" />
+    </condition>
+
+	<!-- OS properties -->
+	<property name="linux.prefix" value="/usr/local" />
+
 	<!-- JSFML properties -->
 	<property name="jsfml.package" value="sfml" />
-	<property name="jsfml.bin" value="jsfml" />
+	<property name="jsfml.version" value="2.0.0" />
 	<property name="jsfml.out" location="./out" />
-	<property name="jsfml.lib" location="./lib" />
-
-	<!-- SFML properties -->
-	<property name="sfml.bin" location="./sfml/bin" />
-	<property name="sfml.lib" location="./sfml/lib" />
-	<property name="sfml.include" location="./sfml/include" />
 
 	<!-- Java properties -->
 	<property name="java.src" location="./src" />
@@ -26,10 +35,11 @@
 	<property name="jni.out" location="${jsfml.out}/include" />
 
 	<!-- Javadoc properties -->
-	<property name="javadoc.out" location="./javadoc" />
+	<property name="javadoc.out" location="./out/doc" />
 
 	<!-- Jar properties -->
 	<property name="jar.file" value="${jsfml.out}/jsfml.jar" />
+	<property name="jarsigner.alias" value="pdinklag" />
 
 	<!-- C++ properties -->
 	<property name="cpp.src" location="./jni/src" />
@@ -37,13 +47,11 @@
 	<property name="cpp.obj" location="${jsfml.out}/obj" />
 	<property name="cpp.out" location="${jsfml.out}/bin" />
 
-	<!-- JAR signing properties -->
-	<property name="jarsigner.alias" value="pdinklag" />
-
 	<!-- Compile Java -->
 	<target name="compile" description="Compile the Java sources.">
 		<mkdir dir="${java.out}" />
 		<javac includeAntRuntime="false" srcdir="${java.src}" destdir="${java.out}" classpath="${java.classpath}" />
+
 	</target>
 
 	<!-- Generate headers -->
@@ -93,13 +101,13 @@
 		</javah>
 	</target>
 
-	<!-- Compile C++ for Mac OS X - not to be used directly, use macosx -->
-	<target name="macosx.build">
+	<!-- Compile C++ for Mac OS X -->
+	<target name="macosx" description="Build the C++ sources for Mac OS X Universal binary." if="isMac">
+
 		<!-- Requires ${arch} -->
-		<delete file="${cpp.out}/${arch}/lib${jsfml.bin}.jnilib" />
+		<delete file="${cpp.out}/libsfml.jnilib" />
 		<mkdir dir="${cpp.obj}" />
 		<mkdir dir="${cpp.out}" />
-		<mkdir dir="${cpp.out}/${arch}" />
 
 		<!-- get source files -->
 		<fileset id="cpp.src.fileset" dir="${cpp.src}">
@@ -120,18 +128,18 @@
 			<arg value="-arch" />
 			<arg value="x86_64" />
 			<arg value="-o" />
-			<arg value="${cpp.out}/${arch}/lib${jsfml.bin}.jnilib" />
-			<arg value="-Wl,-L${sfml.bin}/${arch},-lsfml-system,-lsfml-window,-lsfml-graphics,-lsfml-audio" />
+			<arg value="${cpp.out}/libsfml.jnilib" />
+			<arg value="-Wl,-L${sfml.bin},-lsfml-system,-lsfml-window,-lsfml-graphics,-lsfml-audio" />
 			<arg line="${cpp.src.files}" />
 		</exec>
 
 		<!-- edit load path of the libjsfml.jnilib's dependencies -->
-		<exec executable="install_name_tool" dir="${cpp.out}/${arch}/" failonerror="true">
+		<exec executable="install_name_tool" dir="${cpp.out}/" failonerror="true">
 			<arg value="-id" />
 			<arg value="libjsfml.jnilib" />
 			<arg value="libjsfml.jnilib" />
 		</exec>
-		<exec executable="install_name_tool" dir="${cpp.out}/${arch}/" failonerror="true">
+		<exec executable="install_name_tool" dir="${cpp.out}/" failonerror="true">
 			<arg value="-change" />
 			<arg value="libsfml-system.dylib" />
 			<arg value="@loader_path/libsfml-system.dylib" />
@@ -147,31 +155,21 @@
 			<arg value="libjsfml.jnilib" />
 		</exec>
 
-		<copy todir="${cpp.out}/${arch}">
-			<fileset dir="${sfml.bin}/${arch}" includes="*.dylib" />
+		<copy todir="${cpp.out}">
+			<fileset dir="${sfml.bin}" includes="*.dylib" />
 		</copy>
 
 		<checksum>
-			<fileset dir="${cpp.out}/${arch}" includes="*.jnilib *.dylib" />
+			<fileset dir="${cpp.out}" includes="*.jnilib *.dylib" />
 		</checksum>
 	</target>
 
-	<!-- Compile C++ for Mac OS X -->
-	<target name="macosx" description="Build the C++ sources for Mac OS X Universal binary.">
-		<property name="arch" value="macosx_universal" />
-		<ant target="macosx.build" />
-	</target>
-
 	<!-- Compile C++ for Linux - not to be used directly, use either linux32 or linux64 -->
-	<target name="linux" depends="headers">
-		<!-- Requires ${arch} -->
-		<property name="arch" value="linux" />
+	<target name="linux" if="isLinux">
 
-		<delete file="${cpp.out}/${arch}/lib${jsfml.bin}.so" />
+		<delete file="${cpp.out}/libsfml.so" />
 		<mkdir dir="${cpp.out}" />
-		<mkdir dir="${cpp.out}/${arch}" />
 		<mkdir dir="${cpp.obj}" />
-		<mkdir dir="${cpp.obj}/${arch}" />
 
 		<!-- get source files -->
 		<fileset id="cpp.src.fileset" dir="${cpp.src}">
@@ -181,32 +179,25 @@
 		<pathconvert pathsep=" " property="cpp.src.files" refid="cpp.src.fileset"/>
 
 		<!-- compile and link -->
-		<exec executable="g++" dir="${cpp.obj}/${arch}" failonerror="true">
+		<exec executable="g++" dir="${cpp.obj}" failonerror="true">
 			<arg value="-I${cpp.include}" />
 			<arg value="-I${jni.out}" />
 			<arg value="-I${env.JAVA_HOME}/include" />
 			<arg value="-shared" />
 			<arg value="-fPIC" />
-			<arg value="-o${cpp.out}/${arch}/lib${jsfml.bin}.so" />
+			<arg value="-o${cpp.out}/libsfml.so" />
 			<arg line="${cpp.src.files}" />
 			<arg value="-Wl,-no-undefined,-lsfml-audio,-lsfml-graphics,-lsfml-window,-lsfml-system" />
 		</exec>
-
-		<checksum>
-			<fileset dir="${cpp.out}/${arch}" includes="*.so" />
-		</checksum>
 	</target>
 
 	<!-- Compile C++ for Windows - not to be used directly, use either win32 or win64 -->
-	<target name="windows" depends="headers">
-		<property name="arch" value="windows" />
+	<target name="windows" if="isWindows">
 
-		<!-- Requires ${arch}, ${cl}, ${link}, ${cwd}, ${winsdk.lib} and ${vs.lib} -->
-		<delete file="${cpp.out}/${arch}/${jsfml.bin}.dll" />
+		<!-- Requires ${cl}, ${link}, ${cwd}, ${winsdk.lib} and ${vs.lib} -->
+		<delete file="${cpp.out}/${arch}/jsfml.dll" />
 		<mkdir dir="${cpp.obj}" />
-		<mkdir dir="${cpp.obj}/${arch}" />
 		<mkdir dir="${cpp.out}" />
-		<mkdir dir="${cpp.out}/${arch}" />
 
 		<!-- compile -->
 		<exec executable="cl.exe" failonerror="true">
@@ -220,60 +211,60 @@
 			<arg value="/I${env.JAVA_HOME}/include/win32" />
 			<arg value="${cpp.src}/Intercom/*.cpp" />
 			<arg value="${cpp.src}/JNI/*.cpp" />
-			<arg value="/Fo${cpp.obj}/${arch}/" />
+			<arg value="/Fo${cpp.obj}/" />
 		</exec>
 
 		<!-- link -->
 		<exec executable="link.exe" failonerror="true">
 			<arg value="/nologo" />
 			<arg value="/DLL" />
-			<arg value="/OUT:${cpp.out}/${arch}/${jsfml.bin}.dll" />
+			<arg value="/OUT:${cpp.out}/jsfml.dll" />
 			<arg value="sfml-main.lib" />
 			<arg value="sfml-system.lib" />
 			<arg value="sfml-window.lib" />
 			<arg value="sfml-graphics.lib" />
 			<arg value="sfml-audio.lib" />
-			<arg value="${cpp.obj}/${arch}/*.obj" />
+			<arg value="${cpp.obj}/*.obj" />
 		</exec>
 
-		<delete file="${cpp.out}/${arch}/${jsfml.bin}.exp" />
-		<delete file="${cpp.out}/${arch}/${jsfml.bin}.lib" />
+		<delete file="${cpp.out}/jsfml.exp" />
+		<delete file="${cpp.out}/jsfml.lib" />
 	</target>
 
 	<!-- Jar -->
 	<target name="jar" description="Generate the JAR file." depends="compile">
 		<jar destfile="${jar.file}">
 			<fileset dir="${java.out}" includes="**/*.class" />
-			<fileset dir="${jsfml.out}" includes="**/*.dll **/*.so* **/*.jnilib **/*.dylib **/*.MD5" />
+			<fileset dir="${jsfml.out}" includes="**/*.MD5" />
 			<manifest>
 				<attribute name="Built-By" value="${user.name}"/>
 				<section name="common">
 					<attribute name="Specification-Title" value="JSFML" />
 					<attribute name="Specification-Version" value="1.0" />
 					<attribute name="Specification-Vendor" value="Patrick Dinklage" />
-					<attribute name="Implementation-Title" value="org.jsfml" />
-					<attribute name="Implementation-Version" value="pre-RC" />
+					<attribute name="Implementation-Title" value="sfml" />
+					<attribute name="Implementation-Version" value="${jsfml.version}" />
 					<attribute name="Implementation-Vendor" value="Patrick Dinklage" />
 				</section>
-				<section name="org/jsfml/">
+				<section name="sfml/">
 					<attribute name="Sealed" value="true"/>
 				</section>
-				<section name="org/jsfml/audio/">
+				<section name="sfml/internal">
 					<attribute name="Sealed" value="true"/>
 				</section>
-				<section name="org/jsfml/graphics/">
+				<section name="sfml/system/">
 					<attribute name="Sealed" value="true"/>
 				</section>
-				<section name="org/jsfml/internal">
+				<section name="sfml/window/">
 					<attribute name="Sealed" value="true"/>
 				</section>
-				<section name="org/jsfml/system/">
+				<section name="jsfml/window/event/">
 					<attribute name="Sealed" value="true"/>
 				</section>
-				<section name="org/jsfml/window/">
+				<section name="sfml/graphics/">
 					<attribute name="Sealed" value="true"/>
 				</section>
-				<section name="org/jsfml/window/event/">
+				<section name="sfml/audio/">
 					<attribute name="Sealed" value="true"/>
 				</section>
 			</manifest>
@@ -297,26 +288,68 @@
 			/>
 	</target>
 
+	<!-- Compile everything -->
+	<target name="make" description="Compile everything.">
+        <antcall target="headers" />
+        <antcall target="compile" />
+        <antcall target="windows" />
+        <antcall target="macosx" />
+        <antcall target="linux" />
+        <antcall target="jar" />
+	</target>
+
+	<!-- Install everything -->
+	<target name="install" description="Install everything.">
+
+		<copy tofile="${linux.prefix}/share/java/sfml-${jsfml.version}.jar">
+			<fileset file="${jar.file}" />
+		</copy>
+
+		<copy todir="${linux.prefix}/lib/jni">
+			<fileset file="${jsfml.out}/bin/linux/libsfml.so" />
+		</copy>
+
+
+	</target>
+
 	<!-- Clean everything -->
-	<target name="clean" description="Clean up.">
+	<target name="clean" description="Clean up everything.">
 		<delete dir="${jsfml.out}" />
 		<delete dir="${examples.out}" />
 		<delete dir="${javadoc.out}" />
 	</target>
 
-	<!-- Help -->
+	<!-- Generate the documentation. -->
+	<target name="doc" description="Generate the documentation.">
+		<antcall target="javadoc" />
+	</target>
+
+	<!-- Show a helper message -->
 	<target name="help" description="Display instructions on how to use this buildfile.">
-		<echo>JSFML Build Script
+		<echo>
+JSFML Build Script
 ==================
+make    -- Compile everything
+install -- Install everything
+clean   -- Clean everything
+doc     -- Generate the documentation
+help    -- Show this message
+version -- Print out the current version
 
 compile -- Compiles the Java sources to out/classes
-headers -- Generates JNI headers in include/JSFML/JNI.
+jar     -- Generates the JSFML jar file in out.
+signjar -- Signs the generated JAR file.
 javadoc -- Generates the Javadoc in javadoc.
+
+headers -- Generates JNI headers in include/JSFML/JNI.
 windows -- Compiles and links the C++ sources for Windows
 linux   -- Compiles and links the C++ sources for Linux
 macosx  -- Compiles and links the C++ sources for Mac OS X.
-jar     -- Generates the JSFML jar file in out.
-signjar -- Signs the generated JAR file.
-clean   -- Deletes the out and javadoc directories entirely.</echo>
+		</echo>
+	</target>
+
+	<!-- Generate the documentation. -->
+	<target name="version" description="Print out the JSFML version.">
+		<echo message="${jsfml.version}" />
 	</target>
 </project>
